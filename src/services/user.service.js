@@ -1,16 +1,17 @@
-// src/services/user.service.js
-
-class QuitandaService {
-  // Simula o cadastro de um produto (Fruta, Legume, Ovo)
-  cadastrarProduto(produto) {
-    if (!produto.nome || !produto.preco) {
-      throw new Error("Nome e preço são obrigatórios.");
-    }
-    if (produto.preco <= 0) {
-      throw new Error("O preço deve ser maior que zero.");
-    }
-    return { ...produto, id: 1, status: "cadastrado" };
+// backend/src/userService.js
+export const createUser = (userData) => {
+  if (!userData.name) {
+    throw new Error("O nome do usuário é obrigatório.");
   }
-}
+  if (userData.age < 18) {
+    throw new Error("O usuário deve ser maior de idade.");
+  }
 
-module.exports = new QuitandaService();
+  return {
+    id: Math.floor(Math.random() * 1000000), // ID aleatório
+    name: userData.name,
+    age: userData.age,
+    isActive: true,
+    roles: ['user']
+  };
+};
