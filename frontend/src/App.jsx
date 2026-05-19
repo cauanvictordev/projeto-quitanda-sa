@@ -2,70 +2,45 @@ import { useState } from 'react'
 import './App.css'
 
 function App() {
-  // Estados para controlar o formulário (RF01)
-  const [name, setName] = useState('')
-  const [age, setAge] = useState('')
-  const [message, setMessage] = useState('')
+  const [tasks, setTasks] = useState([])
+  const [error, setError] = useState('')
 
-  const handleRegister = (e) => {
-    e.preventDefault()
-    
-    // Lógica baseada nos seus Casos de Teste (CT02 e CT03)
-    if (!name) {
-      setMessage("Erro: O nome do usuário é obrigatório.")
-      return
+  // Função que busca as tarefas do seu Backend (id e titulo)
+  const carregarTarefas = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/tasks')
+      const data = await response.json()
+      
+      if (Array.isArray(data)) {
+        setTasks(data)
+        setError('')
+      } else {
+        setError('Erro: O retorno da API não é um array.')
+      }
+    } catch (err) {
+      setError('Não foi possível conectar ao backend.')
     }
-    if (Number(age) < 18) {
-      setMessage("Erro: O usuário deve ser maior de idade.")
-      return
-    }
-
-    setMessage(`Sucesso: Usuário ${name} cadastrado!`)
   }
 
   return (
-    <div className="container">
-      <header>
-        <h1>🍎 Quitanda S.A.</h1>
-        <p>Sistema de Gerenciamento de Usuários</p>
-      </header>
+    <div style={{ padding: '40px', fontFamily: 'sans-serif' }}>
+      <h1>📋 Gerenciador de Tarefas</h1>
+      
+      {/* Botão que o professor pediu */}
+      <button id="btn-carregar" onClick={carregarTarefas} style={{ padding: '10px 20px', cursor: 'pointer' }}>
+        Carregar Tarefas
+      </button>
 
-      <section className="form-section">
-        <h2>Cadastro de Usuário</h2>
-        <form onSubmit={handleRegister}>
-          <div className="input-group">
-            <label>Nome:</label>
-            <input 
-              type="text" 
-              value={name} 
-              onChange={(e) => setName(e.target.value)} 
-              placeholder="Digite o nome completo"
-            />
-          </div>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
 
-          <div className="input-group">
-            <label>Idade:</label>
-            <input 
-              type="number" 
-              value={age} 
-              onChange={(e) => setAge(e.target.value)} 
-              placeholder="Ex: 20"
-            />
-          </div>
-
-          <button type="submit" className="btn-save">Finalizar Cadastro</button>
-        </form>
-
-        {message && (
-          <div className={`message ${message.includes('Erro') ? 'error' : 'success'}`}>
-            {message}
-          </div>
-        )}
-      </section>
-
-      <footer>
-        <p>Projeto Acadêmico - Estrutura /backend /frontend /documentos</p>
-      </footer>
+      {/* Lista <li> contendo apenas ID e Nome/Título da tarefa */}
+      <ul id="lista-tarefas" style={{ marginTop: '20px', textAlign: 'left' }}>
+        {tasks.map((task) => (
+          <li key={task.id} className="task-item" style={{ padding: '5px 0' }}>
+            <strong>ID:</strong> {task.id} | <strong>Tarefa:</strong> {task.title || task.name}
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }

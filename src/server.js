@@ -1,16 +1,17 @@
 import express from 'express';
-import taskRoutes from './routes/taskRoutes.js'; // Mudamos para ler tarefas
+import cors from 'cors';
+import taskRoutes from './routes/taskRoutes.js'; 
 
 const PORT = 3000;
 const app = express();
 
+app.use(cors()); 
 app.use(express.json());
 
 app.get("/", (req, res) => {
     res.send("API de Gerenciamento de Tarefas - SA Rodando!");
 });
 
-// Registrar as rotas de tarefas no caminho /tasks
 app.use('/tasks', taskRoutes);
 
 app.listen(PORT, () => {
