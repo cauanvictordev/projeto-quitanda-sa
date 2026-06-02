@@ -5,7 +5,6 @@ function App() {
   const [tasks, setTasks] = useState([])
   const [error, setError] = useState('')
 
-  // Função que busca as tarefas do seu Backend (id e titulo)
   const carregarTarefas = async () => {
     try {
       const response = await fetch('http://localhost:3000/tasks')
@@ -23,21 +22,22 @@ function App() {
   }
 
   return (
-    <div style={{ padding: '40px', fontFamily: 'sans-serif' }}>
-      <h1>📋 Gerenciador de Tarefas</h1>
+    <div className="quitanda-container">
+      <h1 className="quitanda-title">🏪 Sistema Quitanda - Controle de Estoque</h1>
       
-      {/* Botão que o professor pediu */}
-      <button id="btn-carregar" onClick={carregarTarefas} style={{ padding: '10px 20px', cursor: 'pointer' }}>
-        Carregar Tarefas
+      <button className="quitanda-button" id="btn-carregar" onClick={carregarTarefas}>
+        Listar Produtos / Frutas
       </button>
 
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <p className="quitanda-error">{error}</p>}
 
-      {/* Lista <li> contendo apenas ID e Nome/Título da tarefa */}
-      <ul id="lista-tarefas" style={{ marginTop: '20px', textAlign: 'left' }}>
+      <ul className="quitanda-list" id="lista-tarefas">
         {tasks.map((task) => (
-          <li key={task.id} className="task-item" style={{ padding: '5px 0' }}>
-            <strong>ID:</strong> {task.id} | <strong>Tarefa:</strong> {task.title || task.name}
+          <li key={task.id} className="product-card task-item">
+            <span className="badge-id">#ID {task.id}</span>
+            <span className="product-name">
+              <strong>Produto:</strong> {task.title || task.name}
+            </span>
           </li>
         ))}
       </ul>

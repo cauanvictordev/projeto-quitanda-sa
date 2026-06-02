@@ -4,8 +4,8 @@ module.exports = {
   dbConfig: {
     user: 'postgres',
     host: 'localhost',
-    database: 'quitanda_db',
-    password: 'sua_senha',
+    database: 'quitanda',
+    password: 'senai',
     port: 5432
   }
 };

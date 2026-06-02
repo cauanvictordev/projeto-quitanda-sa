@@ -1,17 +1,23 @@
-// backend/src/userService.js
-export const createUser = (userData) => {
-  if (!userData.name) {
-    throw new Error("O nome do usuário é obrigatório.");
-  }
-  if (userData.age < 18) {
-    throw new Error("O usuário deve ser maior de idade.");
-  }
+class UserService {
+    createUser(userData) {
+        const { name, age } = userData;
 
-  return {
-    id: Math.floor(Math.random() * 1000000), // ID aleatório
-    name: userData.name,
-    age: userData.age,
-    isActive: true,
-    roles: ['user']
-  };
-};
+        if (!name || name.trim() === "") {
+            throw new Error("O nome do usuário é obrigatório.");
+        }
+
+        if (age === undefined || age < 18) {
+            throw new Error("O usuário deve ser maior de idade.");
+        }
+
+        return {
+            id: Math.floor(Math.random() * 100000),
+            name: name,
+            age: Number(age),
+            isActive: true,
+            roles: ['user']
+        };
+    }
+}
+
+export const userService = new UserService();
